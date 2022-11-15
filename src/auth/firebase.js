@@ -3,6 +3,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 
 //* Your web app's Firebase configuration
@@ -32,7 +34,7 @@ export const createUser = async (email, password, navigate) => {
       password
     );
     navigate("/");
-    console.log(userCredential);
+    // console.log(userCredential);
   } catch (error) {
     alert(error.REACT_APP_messagingSenderId);
   }
@@ -44,9 +46,31 @@ export const createUser = async (email, password, navigate) => {
 export const signIn = async (email, password, navigate) => {
   try {
     //? mevcut kullanıcının giriş yapması için kullanılan firebase metodu
-    signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);
     navigate("/");
   } catch (error) {
     alert(error.message);
   }
+};
+
+export const userObserver = (setCurrentUser) => {
+  //? Kullanıcının signin olup olmadığını takip eden ve kullanıcı değiştiğinde yeni kullanıcıyı response olarak dönen firebase metodu
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const { email, displayName, photoUrl } = user;
+      setCurrentUser({ email, displayName, photoUrl });
+      // console.log(user);
+    } else {
+      // User is signed out
+      // ...
+      setCurrentUser(false);
+      console.log("User Logged Out");
+    }
+  });
+};
+
+export const logOut = () => {
+  signOut(auth);
 };

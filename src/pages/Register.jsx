@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleIcon from "../assets/icons/GoogleIcon";
-import { createUser } from "../auth/firebase";
+import { createUser, signInWithGoogle } from "../auth/firebase";
 
 const Register = () => {
   //* ayrı stateler
@@ -21,18 +21,14 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUser(email, password, navigate);
-    // navigate("/");
+    const displayName = `${firstName} ${lastName}`;
+    createUser(email, password, navigate, displayName);
+
     console.log(email, password);
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(info.email, info.password);
-  // };
-  // const handleChange = (e) =>
+  // const hadleChange = (e) =>
   //   setInfo({ ...info, [e.target.name]: e.target.value });
-
   return (
     <div className="overflow-hidden flex-1 h-screen justify-center items-center bg-[#23242a]">
       <div
@@ -48,11 +44,11 @@ const Register = () => {
           <div className="relative w-[300px] mt-[35px] inputbox">
             <input
               type="text"
-              required
               name="firstName"
+              required
               className="relative w-[100%] inputbox-input bg-transparent outline-none text-[#23242a] font-[1em] tracking-[0.05em]"
               onChange={(e) => setFirstName(e.target.value)}
-              // onChange={handleChange}
+              // onChange={hadleChange}
             />
             <span className="absolute left-0 inputbox-span font-[1em] text-[#8f8f8f] tracking-[0.05em]">
               First Name
@@ -62,11 +58,11 @@ const Register = () => {
           <div className="relative w-[300px] mt-[35px] inputbox">
             <input
               type="text"
-              required
               name="lastName"
+              required
               className="relative w-[100%] inputbox-input bg-transparent outline-none text-[#23242a] font-[1em] tracking-[0.05em]"
               onChange={(e) => setLastName(e.target.value)}
-              // onChange={handleChange}
+              // onChange={hadleChange}
             />
             <span className="absolute left-0 inputbox-span font-[1em] text-[#8f8f8f] tracking-[0.05em]">
               Last Name
@@ -76,11 +72,11 @@ const Register = () => {
           <div className="relative w-[300px] mt-[35px] inputbox">
             <input
               type="email"
-              required
               name="email"
+              required
               className="relative w-[100%] inputbox-input bg-transparent outline-none text-[#23242a] font-[1em] tracking-[0.05em]"
               onChange={(e) => setEmail(e.target.value)}
-              // onChange={handleChange}
+              // onChange={hadleChange}
             />
             <span className="absolute left-0 inputbox-span font-[1em] text-[#8f8f8f] tracking-[0.05em]">
               Email
@@ -90,11 +86,11 @@ const Register = () => {
           <div className="relative w-[300px] mt-[35px] inputbox">
             <input
               type="password"
-              required
               name="password"
+              required
               className="relative w-[100%] inputbox-input bg-transparent outline-none text-[#23242a] font-[1em] tracking-[0.05em]"
               onChange={(e) => setPassword(e.target.value)}
-              // onChange={handleChange}
+              // onChange={hadleChange}
             />
             <span className="absolute left-0 inputbox-span font-[1em] text-[#8f8f8f] tracking-[0.05em]">
               Password
@@ -109,6 +105,7 @@ const Register = () => {
           <button
             className="flex justify-between border-none outline-none bg-[#ff4b45] custom-input w-[300px] mt-[15px] rounded-[4px] font-[600] cursor-pointer"
             type="button"
+            // onClick={() => signInWithGoogle(navigate)}
           >
             Continue with Google
             <GoogleIcon color="currentColor" />
