@@ -72,6 +72,7 @@ const Navbar = () => {
           {/* Right elements */}
         </div>
       </nav>
+      {/* Adding a div  with the height of Navbar, giving [px]*/}
       <div className="h-[52px]"></div>
     </>
   );
