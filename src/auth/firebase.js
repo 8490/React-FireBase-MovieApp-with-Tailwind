@@ -5,6 +5,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  updateProfile,
+  signInWithPopup,
 } from "firebase/auth";
 
 //* Your web app's Firebase configuration
@@ -25,7 +27,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 
-export const createUser = async (email, password, navigate) => {
+export const createUser = async (email, password, navigate, displayName) => {
   try {
     //? yeni bir kullanıcı oluşturmak için kullanılan firebase metodu
     const userCredential = await createUserWithEmailAndPassword(
@@ -33,8 +35,11 @@ export const createUser = async (email, password, navigate) => {
       email,
       password
     );
+    await updateProfile(auth.currentUser, {
+      displayName: displayName,
+    });
     navigate("/");
-    // console.log(userCredential);
+    console.log(userCredential);
   } catch (error) {
     alert(error.REACT_APP_messagingSenderId);
   }
@@ -66,11 +71,33 @@ export const userObserver = (setCurrentUser) => {
       // User is signed out
       // ...
       setCurrentUser(false);
-      console.log("User Logged Out");
+      // console.log("User Logged Out");
     }
   });
 };
 
 export const logOut = () => {
   signOut(auth);
+};
+
+// https://console.firebase.google.com/
+//* => Authentication => sign-in-method => enable Google
+//! Google ile girişi enable yap
+//* => Authentication => settings => Authorized domains => add domain
+//! Projeyi deploy ettikten sonra google sign-in çalışması için domain listesine deploy linkini ekle
+
+export const signInWithGoogle = (navigate) => {
+  //? Google ile giriş yapılması için kullanılan firebase metodu
+  const provider = new GoogleAuthProvider();
+
+  //? Açılır pencere ile giriş yapılması için kullanılan firebase metodu
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      console.log(result);
+      navigate("/");
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      console.log(error);
+    });
 };

@@ -105,7 +105,7 @@ const Register = () => {
           <button
             className="flex justify-between border-none outline-none bg-[#ff4b45] custom-input w-[300px] mt-[15px] rounded-[4px] font-[600] cursor-pointer"
             type="button"
-            // onClick={() => signInWithGoogle(navigate)}
+            onClick={() => signInWithGoogle(navigate)}
           >
             Continue with Google
             <GoogleIcon color="currentColor" />
