@@ -7,6 +7,8 @@ import {
   signOut,
   updateProfile,
   signInWithPopup,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 //* Your web app's Firebase configuration
@@ -64,8 +66,8 @@ export const userObserver = (setCurrentUser) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      const { email, displayName, photoUrl } = user;
-      setCurrentUser({ email, displayName, photoUrl });
+      const { email, displayName, photoURL } = user;
+      setCurrentUser({ email, displayName, photoURL });
       // console.log(user);
     } else {
       // User is signed out
@@ -98,6 +100,18 @@ export const signInWithGoogle = (navigate) => {
     })
     .catch((error) => {
       // Handle Errors here.
+      console.log(error);
+    });
+};
+
+export const forgotPassword = (email) => {
+  //? Email yoluyla şifre sıfırlama için kullanılan firebase metodu
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      // Password reset email sent!
+      alert("please check your mail box");
+    })
+    .catch((error) => {
       console.log(error);
     });
 };

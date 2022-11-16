@@ -56,7 +56,7 @@ const Login = () => {
             <span
               role="button"
               className="links-a font-[0.75em] cursor-pointer decoration-none text-[#8f8f8f]"
-              // onClick={() => forgotPassword(email)}
+              onClick={() => forgotPassword(email)}
             >
               Forgot Password
             </span>
@@ -75,7 +75,7 @@ const Login = () => {
           <button
             className="flex justify-between border-none outline-none bg-[#ff4b45] custom-input w-[300px] mt-[15px] rounded-[4px] font-[600] cursor-pointer"
             type="button"
-            // onClick={() => signInWithGoogle(navigate)}
+            onClick={() => signInWithGoogle(navigate)}
           >
             Continue with Google
             <GoogleIcon color="currentColor" />
