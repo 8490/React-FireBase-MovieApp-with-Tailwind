@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import avatar from "../assets/icons/avatar.png";
 import { logOut } from "../auth/firebase";
 import { AuthContext } from "../context/AuthContextProvider";
+import Switch from "./Switch";
 
 const Navbar = () => {
   const { currentUser } = useContext(AuthContext);
@@ -11,7 +12,7 @@ const Navbar = () => {
   // const currentUser = false;
   return (
     <>
-      <nav className="w-full flex flex-wrap items-center justify-between py-3 bg-gray-900 text-white shadow-lg navbar navbar-expand-lg fixed-top">
+      <nav className="w-full flex flex-wrap items-center justify-between py-3 bg-white dark:bg-gray-900 dark:text-white shadow-lg navbar navbar-expand-lg fixed-top">
         <div className="container-fluid w-full flex flex-wrap items-center justify-between px-6">
           <Link className="text-2xl pr-2 font-semibold" to="/">
             React Movie App
@@ -22,6 +23,7 @@ const Navbar = () => {
             {currentUser && (
               <h5 className="mr-2 capitalize">{currentUser?.displayName}</h5>
             )}
+            <Switch />
             <div className="dropdown relative">
               <span
                 className="dropdown-toggle flex items-center hidden-arrow"
