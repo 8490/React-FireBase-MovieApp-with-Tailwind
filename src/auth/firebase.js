@@ -1,15 +1,20 @@
 import { initializeApp } from "firebase/app";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
-  signInWithPopup,
-  GoogleAuthProvider,
-  sendPasswordResetEmail,
 } from "firebase/auth";
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+  toastWarnNotify,
+} from "../helpers/ToastNotify";
 
 //* Your web app's Firebase configuration
 //* https://firebase.google.com/docs/auth/web/start
@@ -41,9 +46,10 @@ export const createUser = async (email, password, navigate, displayName) => {
       displayName: displayName,
     });
     navigate("/");
+    toastSuccessNotify("Registered successfully");
     console.log(userCredential);
   } catch (error) {
-    alert(error.REACT_APP_messagingSenderId);
+    toastErrorNotify(error.message);
   }
 };
 
@@ -55,8 +61,9 @@ export const signIn = async (email, password, navigate) => {
     //? mevcut kullanıcının giriş yapması için kullanılan firebase metodu
     await signInWithEmailAndPassword(auth, email, password);
     navigate("/");
+    toastSuccessNotify("Logged in successfully!");
   } catch (error) {
-    alert(error.message);
+    toastErrorNotify(error.message);
   }
 };
 
@@ -64,39 +71,35 @@ export const userObserver = (setCurrentUser) => {
   //? Kullanıcının signin olup olmadığını takip eden ve kullanıcı değiştiğinde yeni kullanıcıyı response olarak dönen firebase metodu
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
+      console.log(user);
       const { email, displayName, photoURL } = user;
       setCurrentUser({ email, displayName, photoURL });
-      // console.log(user);
     } else {
-      // User is signed out
-      // ...
+      console.log("user logged out");
       setCurrentUser(false);
-      // console.log("User Logged Out");
     }
   });
 };
 
 export const logOut = () => {
   signOut(auth);
+  toastSuccessNotify("Logged out successfully!");
 };
 
-// https://console.firebase.google.com/
+//* https://console.firebase.google.com/
 //* => Authentication => sign-in-method => enable Google
 //! Google ile girişi enable yap
 //* => Authentication => settings => Authorized domains => add domain
 //! Projeyi deploy ettikten sonra google sign-in çalışması için domain listesine deploy linkini ekle
-
 export const signInWithGoogle = (navigate) => {
   //? Google ile giriş yapılması için kullanılan firebase metodu
   const provider = new GoogleAuthProvider();
-
   //? Açılır pencere ile giriş yapılması için kullanılan firebase metodu
   signInWithPopup(auth, provider)
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       navigate("/");
+      toastSuccessNotify("Logged in successfully!");
     })
     .catch((error) => {
       // Handle Errors here.
@@ -109,9 +112,9 @@ export const forgotPassword = (email) => {
   sendPasswordResetEmail(auth, email)
     .then(() => {
       // Password reset email sent!
-      alert("please check your mail box");
+      toastWarnNotify("please check your mail box");
     })
     .catch((error) => {
-      console.log(error);
+      toastErrorNotify(error);
     });
 };
