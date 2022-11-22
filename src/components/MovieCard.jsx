@@ -25,7 +25,7 @@ const MovieCard = ({ title, poster_path, overview, vote_average, id }) => {
       className="movie"
       onClick={() => {
         navigate("/details/" + id);
-        //    !currentUser && toastWarnNotify("please log in to see details");
+        !currentUser && alert("please log in to see details");
       }}
     >
       <img
