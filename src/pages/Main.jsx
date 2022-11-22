@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import MovieCard from "../components/MovieCard";
 
 const API_KEY = process.env.REACT_APP_TMDB_KEY;
 const FEATURED_API = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}`;
@@ -20,7 +21,7 @@ const Main = () => {
   return (
     <div>
       {movies.map((movie, index) => (
-        <div key={index}>{movie.title}</div>
+        <MovieCard key={movie.id} {...movie} />
       ))}
     </div>
   );
