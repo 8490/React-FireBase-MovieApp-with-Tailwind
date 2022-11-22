@@ -8,21 +8,31 @@ const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}
 
 const Main = () => {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     getMovies(FEATURED_API);
   }, []);
 
   const getMovies = (API) => {
+    setLoading(true);
     axios
       .get(API)
       .then((res) => setMovies(res.data.results))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   };
   return (
-    <div>
-      {movies.map((movie, index) => (
-        <MovieCard key={movie.id} {...movie} />
-      ))}
+    <div className="flex justify-center flex-wrap">
+      {loading ? (
+        <div
+          className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-blue-600 mt-52"
+          role="status"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      ) : (
+        movies.map((movie, index) => <MovieCard key={movie.id} {...movie} />)
+      )}
     </div>
   );
 };
