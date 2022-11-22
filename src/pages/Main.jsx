@@ -47,7 +47,7 @@ const Main = () => {
           onChange={(e) => setSearchText(e.target.value)}
           value={searchText}
         />
-        <button className="text-white" type="submit">
+        <button className="dark:text-white" type="submit">
           Search
         </button>
       </form>
